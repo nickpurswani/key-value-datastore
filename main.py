@@ -35,7 +35,6 @@ def read(key):
     try:
         fo = open("data.json", "r")
         data = json.load(fo)
-        print(data)
         pass
         fo.close()
     except IOError:
@@ -46,10 +45,38 @@ def read(key):
         b=data[key]
         if b[1]!=0:
             if time.time()<b[1]: #comparing the present time with expiry time
-                stri=str(key)+":"+str(b[0]) #to return the value in the format of JasonObject i.e.,"key_name:value"
-                return stri
+                 #to return the value in the format of JasonObject i.e.,"key_name:value"
+                return data[key]
             else:
                 print("error: time-to-live of",key,"has expired") #error message5
         else:
-            stri=str(key)+":"+str(b[0])
-            return stri
+            temp = {}
+            temp[key]=b[0]
+            return temp
+#for delete operation
+#use syntax "delete(key_name)"
+
+def delete(key):
+    try:
+        fo = open("data.json", "r")
+        data = json.load(fo)
+        pass
+        fo.close()
+    except IOError:
+        data = {}
+    if key not in data:
+        print("error: given key does not exist in database. Please enter a valid key") #error message4
+    else:
+        b=data[key]
+        if b[1]!=0:
+            if time.time()<b[1]: #comparing the current time with expiry time
+                del data[key]
+                print("key is successfully deleted")
+            else:
+                print("error: time-to-live of",key,"has expired") #error message5
+        else:
+            del data[key]
+            print("key is successfully deleted")
+        with open('data.json', 'w') as outfile:
+            json.dump(data, outfile)
+
