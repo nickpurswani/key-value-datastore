@@ -52,6 +52,7 @@ def read(key):
         else:
             temp = {}
             temp[key]=b[0]
+            
             return temp
 #for delete operation
 #use syntax "delete(key_name)"
@@ -79,4 +80,11 @@ def delete(key):
             print("key is successfully deleted")
         with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
+try:
+   t = Thread(target=create, args=("thread", 2))
+   t.start()
+   t = Thread(target=create, args=("th", 4))
+   t.start()
+except:
+   print("Error: unable to start thread")
 
